@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Астронавигатор{% endblock %}</title>
+  <meta name="description" content="Аналитический джйотиш без мистики: где вы на карте периодов и какие дороги сейчас открыты.">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="/">
+        <span class="compass"></span> Астронавигатор
+      </a>
+      <nav class="nav">
+        <a href="/navigator" class="{{ 'active' if active == 'navigator' }}">Навигатор дня</a>
+        <a href="/order" class="{{ 'active' if active == 'order' }}">Разбор</a>
+        <a href="/method" class="{{ 'active' if active == 'method' }}">О методе</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      Астронавигатор · аналитический джйотиш без мистики<br>
+      <a href="/privacy">Политика конфиденциальности</a> ·
+      <a href="/offer">Публичная оферта</a>
+    </div>
+  </footer>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

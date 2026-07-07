@@ -1,0 +1,5 @@
+Flask>=3.0
+PyYAML>=6.0
+gunicorn>=21.0
+# Слой расчётов (compute) — подключим на следующем этапе:
+# pyswisseph>=2.10

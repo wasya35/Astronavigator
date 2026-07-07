@@ -1,0 +1,199 @@
+/* Астронавигатор — дизайн-система.
+   Палитра и типографика по ТЗ, раздел 10. Светлая тема, без мистики,
+   sentence case, без восклицательных знаков. Мобильный приоритет. */
+
+:root {
+  --bg: #FBFAF6;          /* айвори/крем */
+  --violet-bg: #EEEDFE;   --violet: #534AB7;  --violet-dk: #26215C;
+  --teal-bg: #E1F5EE;     --teal: #0F6E56;    --teal-dk: #04342C;
+  --gold-bg: #FAEEDA;     --gold: #854F0B;    --gold-dk: #633806;
+  --coral-bg: #FAECE7;    --coral: #993C1D;   --coral-dk: #712B13;
+  --text: #44443F;        --text-2: #888780;
+  --line: #E7E5DC;
+  --radius: 16px;
+  --maxw: 960px;
+  --serif: Georgia, "Times New Roman", serif;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { line-height: 1.25; font-weight: 600; margin: 0 0 .5em; }
+h1 { font-family: var(--serif); font-weight: 500; }
+p { margin: 0 0 1em; }
+a { color: var(--violet); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.container { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
+.muted { color: var(--text-2); }
+.center { text-align: center; }
+
+/* --- Шапка --- */
+.site-header {
+  border-bottom: 1px solid var(--line);
+  background: rgba(251, 250, 246, .9);
+  position: sticky; top: 0; z-index: 10; backdrop-filter: blur(6px);
+}
+.site-header .container {
+  display: flex; align-items: center; justify-content: space-between;
+  min-height: 64px; gap: 16px; flex-wrap: wrap;
+}
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 600; color: var(--violet-dk); }
+.brand .compass {
+  width: 26px; height: 26px; border-radius: 50%;
+  border: 2px solid var(--violet); position: relative; flex: 0 0 auto;
+}
+.brand .compass::after {
+  content: ""; position: absolute; inset: 5px;
+  background: conic-gradient(var(--violet) 0 25%, transparent 0 50%, var(--violet) 0 75%, transparent 0);
+  clip-path: polygon(50% 0, 62% 50%, 50% 100%, 38% 50%); background: var(--violet);
+}
+.nav { display: flex; gap: 20px; flex-wrap: wrap; }
+.nav a { color: var(--text); font-size: 15px; }
+.nav a.active { color: var(--violet); font-weight: 600; }
+
+/* --- Кнопки --- */
+.btn {
+  display: inline-block; border: 0; cursor: pointer;
+  background: var(--violet); color: #fff;
+  padding: 13px 22px; border-radius: 12px;
+  font-size: 16px; font-family: var(--sans); font-weight: 600;
+  transition: background .15s;
+}
+.btn:hover { background: var(--violet-dk); text-decoration: none; }
+.btn-ghost { background: transparent; color: var(--violet); border: 1px solid var(--violet); }
+.btn-ghost:hover { background: var(--violet-bg); }
+.btn-block { display: block; width: 100%; text-align: center; }
+
+/* --- Секции --- */
+section { padding: 56px 0; }
+.eyebrow {
+  text-transform: uppercase; letter-spacing: .12em;
+  font-size: 12.5px; color: var(--violet); font-weight: 600; margin-bottom: 14px;
+}
+
+/* --- Формы --- */
+.field { margin-bottom: 14px; }
+.field label { display: block; font-size: 13.5px; color: var(--text-2); margin-bottom: 5px; }
+.field input {
+  width: 100%; padding: 12px 14px; font-size: 16px;
+  border: 1px solid var(--line); border-radius: 10px; background: #fff; color: var(--text);
+  font-family: var(--sans);
+}
+.field input:focus { outline: none; border-color: var(--violet); }
+.checkbox { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text-2); }
+.checkbox input { width: auto; }
+.form-card {
+  background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 24px;
+}
+
+/* --- Карточки архетипов --- */
+.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.card {
+  background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 22px; border-top: 4px solid var(--violet);
+}
+.card.teal { border-top-color: var(--teal); }
+.card.gold { border-top-color: var(--gold); }
+.card h3 { font-size: 18px; }
+.card .icon { font-size: 22px; margin-bottom: 8px; }
+
+/* --- Каскад «Где вы сейчас» --- */
+.cascade { display: grid; gap: 12px; }
+.plate {
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  border-radius: 14px; padding: 16px 20px; border: 1px solid var(--line);
+}
+.plate .left .label { font-size: 12.5px; text-transform: uppercase; letter-spacing: .08em; color: var(--text-2); }
+.plate .left .value { font-size: 18px; font-weight: 600; }
+.plate .right { text-align: right; color: var(--text); max-width: 55%; }
+.plate.violet { background: var(--violet-bg); }
+.plate.teal   { background: var(--teal-bg); }
+.plate.gold   { background: var(--gold-bg); }
+.plate.coral  { background: var(--coral-bg); }
+.plate.locked { opacity: .6; }
+.badge-stage {
+  font-size: 11px; background: #fff; border: 1px solid var(--line);
+  border-radius: 20px; padding: 2px 9px; color: var(--text-2);
+}
+
+/* --- Блок «Сегодня» --- */
+.today-badge {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 10px 16px; border-radius: 30px; color: #fff; font-weight: 600;
+}
+.today-badge .dot { width: 10px; height: 10px; border-radius: 50%; background: #fff; }
+.metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
+.metric { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+.metric .k { font-size: 12.5px; color: var(--text-2); }
+.metric .v { font-size: 16px; font-weight: 600; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.note-flow, .note-care { border-radius: 12px; padding: 14px 16px; }
+.note-flow { background: var(--teal-bg); border: 1px solid #cceadd; }
+.note-care { background: var(--gold-bg); border: 1px solid #f0dcb8; }
+.note-flow .k, .note-care .k { font-size: 12.5px; font-weight: 600; margin-bottom: 4px; }
+
+/* --- Полоса 7 дней (под гейтом) --- */
+.week-wrap { position: relative; }
+.week {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; align-items: end;
+  height: 140px; padding: 10px; background: #fff; border: 1px solid var(--line); border-radius: 14px;
+}
+.week .bar { border-radius: 8px 8px 4px 4px; position: relative; }
+.week .bar span {
+  position: absolute; bottom: -22px; left: 0; right: 0; text-align: center;
+  font-size: 11px; color: var(--text-2);
+}
+.gate {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 12px; text-align: center;
+  backdrop-filter: blur(7px); background: rgba(251, 250, 246, .55); border-radius: 14px;
+}
+.gate.hidden { display: none; }
+.blurred { filter: blur(4px); }
+
+/* --- CTA / плашки --- */
+.cta {
+  background: var(--violet-dk); color: #fff; border-radius: var(--radius);
+  padding: 28px; text-align: center;
+}
+.cta h3 { color: #fff; }
+.cta .btn { background: #fff; color: var(--violet-dk); margin: 6px; }
+.cta .btn:hover { background: var(--violet-bg); }
+
+.panel { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; }
+.profile-bar {
+  display: flex; align-items: center; gap: 10px; justify-content: space-between;
+  background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 12px 18px;
+}
+.voice { font-style: italic; color: var(--violet-dk); font-size: 20px; font-family: var(--serif); }
+
+.pkg { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.pkg .card { border-top-color: var(--gold); }
+.price { font-size: 22px; font-weight: 700; color: var(--gold-dk); }
+
+.site-footer { border-top: 1px solid var(--line); padding: 28px 0; color: var(--text-2); font-size: 14px; }
+.site-footer a { color: var(--text-2); }
+.stub-flag {
+  background: var(--gold-bg); border: 1px solid #f0dcb8; color: var(--gold-dk);
+  border-radius: 10px; padding: 8px 14px; font-size: 13px; margin-bottom: 18px;
+}
+
+/* --- Мобильный приоритет --- */
+@media (max-width: 720px) {
+  section { padding: 40px 0; }
+  .cards, .metrics, .pkg, .two-col { grid-template-columns: 1fr; }
+  .plate { flex-direction: column; align-items: flex-start; }
+  .plate .right { text-align: left; max-width: 100%; }
+  .nav { gap: 14px; }
+  h1 { font-size: 28px; }
+}

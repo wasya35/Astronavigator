@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% set active = 'navigator' %}
+{% block title %}Навигатор дня — Астронавигатор{% endblock %}
+{% block content %}
+
+<section>
+  <div class="container">
+    <div class="stub-flag">
+      Демо-режим: расчёты пока на заглушках (числа синтетические).
+      Реальный движок подключается на следующем этапе.
+    </div>
+
+    <!-- Шапка профиля -->
+    <div class="profile-bar" id="profile-bar">
+      <div><strong id="profile-name">Гость</strong> · <span id="profile-city">—</span></div>
+      <a href="#" id="edit-profile" class="btn-ghost" style="padding:7px 14px;border-radius:10px">изменить</a>
+    </div>
+
+    <!-- Форма ввода (свёрнута, разворачивается по «изменить») -->
+    <div class="form-card" id="entry-form-wrap" style="display:none;margin-top:14px;max-width:560px">
+      <form id="entry-form">
+        <div class="field"><label>Дата рождения</label><input name="date" placeholder="ДД.ММ.ГГГГ" required></div>
+        <div class="field"><label>Время рождения</label><input name="time" placeholder="ЧЧ:ММ">
+          <label class="checkbox" style="margin-top:8px"><input type="checkbox" name="time_unknown"> не знаю точно</label>
+        </div>
+        <div class="field"><label>Место рождения</label><input name="place" placeholder="город" required></div>
+        <div class="field"><label>Город проживания</label><input name="residence" placeholder="город" required></div>
+        <button class="btn btn-block" type="submit">Пересчитать</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Каскад «Где вы сейчас» -->
+<section style="padding-top:0">
+  <div class="container">
+    <h2 style="font-size:22px">Где вы сейчас</h2>
+    <p class="muted" style="margin-top:-4px">Каскад периодов от медленного к быстрому. Статичен месяцами.</p>
+    <div class="cascade" id="cascade">
+      <div class="plate violet">
+        <div class="left"><div class="label">Махадаша</div><div class="value" id="md-value">—</div></div>
+        <div class="right" id="md-bg">—</div>
+      </div>
+      <div class="plate teal">
+        <div class="left"><div class="label">Антардаша</div><div class="value" id="ad-value">—</div></div>
+        <div class="right" id="ad-bg">—</div>
+      </div>
+      <div class="plate gold locked">
+        <div class="left"><div class="label">Год · Мунтха</div><div class="value">тема года</div></div>
+        <div class="right"><span class="badge-stage">этап 2 · Варшапхала</span></div>
+      </div>
+      <div class="plate coral locked">
+        <div class="left"><div class="label">Окно недель</div><div class="value">Мудда-даша</div></div>
+        <div class="right"><span class="badge-stage">этап 2 · Варшапхала</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Блок «Сегодня» -->
+<section style="padding-top:0">
+  <div class="container">
+    <div class="panel">
+      <h2 style="font-size:22px;margin-bottom:14px">Сегодня</h2>
+      <div class="today-badge" id="today-badge" style="background:#534AB7">
+        <span class="dot"></span><span id="badge-text">—</span>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="k">Луна в знаке</div><div class="v" id="m-moon">—</div></div>
+        <div class="metric"><div class="k">Тара-бала</div><div class="v" id="m-tara">—</div></div>
+        <div class="metric"><div class="k">Накшатра дня</div><div class="v" id="m-nak">—</div></div>
+      </div>
+      <div class="two-col">
+        <div class="note-flow"><div class="k">В потоке</div><span id="in-flow">—</span></div>
+        <div class="note-care"><div class="k">С осторожностью</div><span id="with-care">—</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Полоса 7 дней (под гейтом) -->
+<section style="padding-top:0">
+  <div class="container">
+    <h2 style="font-size:22px">Ближайшие 7 дней</h2>
+    <p class="muted" style="margin-top:-4px">Климат, не события.</p>
+    <div class="week-wrap">
+      <div class="week blurred" id="week"></div>
+      <div class="gate" id="gate">
+        <div>Откройте прогноз недели</div>
+        <a class="btn" href="https://t.me/?start=site_daily" id="open-tg">Открыть в Telegram</a>
+        <div class="muted" style="font-size:13px">после возврата из бота полоса открыта навсегда</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="padding-top:0">
+  <div class="container">
+    <div class="cta">
+      <h3>Весь год по месяцам и периоды на 10 лет вперёд</h3>
+      <p style="opacity:.85">Полная картина — в разборе «Астронавигатор».</p>
+      <a class="btn" href="/order">Полный разбор</a>
+      <a class="btn" style="background:transparent;border:1px solid #fff;color:#fff" href="https://t.me/?start=site_daily">Навигатор дня в Telegram</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/navigator.js') }}"></script>
+{% endblock %}
