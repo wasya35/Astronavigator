@@ -192,9 +192,18 @@ section { padding: 56px 0; }
 .sky-layout { display: grid; grid-template-columns: 1.1fr 1fr; gap: 22px; align-items: start; }
 .sky-stage { position: relative; width: 100%; max-width: 440px; margin: 0 auto; aspect-ratio: 1 / 1; }
 .chart-box { width: 100%; }
-.sky-stage .chart-box { position: absolute; inset: 8%; }
+.sky-stage .chart-box { position: absolute; inset: 8%; z-index: 2; }
+
+/* Деликатное мерцание звёзд вокруг карты (астрономично, без мистики) */
+.starfield { position: absolute; inset: -8%; z-index: 0; pointer-events: none; }
+.star { position: absolute; border-radius: 50%; background: currentColor; opacity: .2;
+  animation: twinkle 3.6s ease-in-out infinite; }
+@keyframes twinkle { 0%, 100% { opacity: .12; transform: scale(.8); }
+  50% { opacity: .65; transform: scale(1.1); } }
+@media (prefers-reduced-motion: reduce) { .star { animation: none; opacity: .3; } }
+
 .orbit {
-  position: absolute; inset: 0; border-radius: 50%;
+  position: absolute; inset: 0; border-radius: 50%; z-index: 3;
   animation: orbit-spin 90s linear infinite;
 }
 .orbit .sun {

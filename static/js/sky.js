@@ -9,6 +9,30 @@
 
   var SIGN_ORDER = ['Su', 'Mo', 'Ma', 'Me', 'Ju', 'Ve', 'Sa', 'Ra', 'Ke'];
 
+  // Мерцающие звёзды по краям сцены (обходим центр, где карта)
+  (function makeStars() {
+    var sf = document.getElementById('starfield');
+    if (!sf) return;
+    var pts = [
+      [4, 8], [12, 22], [8, 88], [3, 62], [18, 4], [22, 95],
+      [50, 2], [48, 97], [78, 6], [70, 93], [90, 20], [95, 70],
+      [92, 90], [88, 44], [6, 40], [30, 92],
+    ];
+    var colors = ['#854F0B', '#534AB7', '#B8B6AD'];
+    pts.forEach(function (p, i) {
+      var s = document.createElement('span');
+      s.className = 'star';
+      var size = 2 + (i % 3);
+      s.style.top = p[0] + '%';
+      s.style.left = p[1] + '%';
+      s.style.width = size + 'px';
+      s.style.height = size + 'px';
+      s.style.color = colors[i % colors.length];
+      s.style.animationDelay = (i * 0.37 % 3.6).toFixed(2) + 's';
+      sf.appendChild(s);
+    });
+  })();
+
   function fmtOffset(off) {
     if (off === 0) return 'сейчас';
     var d = new Date(Date.now() + off * 86400000);
