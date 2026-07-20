@@ -1,5 +1,9 @@
 Flask>=3.0
 PyYAML>=6.0
 gunicorn>=21.0
-# Слой расчётов (compute) — подключим на следующем этапе:
-# pyswisseph>=2.10
+# Слой расчётов (движок, перенесён из бота Dliotish1):
+pyswisseph==2.10.3.2
+geopy==2.4.1
+timezonefinder==6.6.3
+pytz==2024.1
+httpx==0.27.2

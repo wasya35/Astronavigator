@@ -1,88 +1,69 @@
 {% extends "base.html" %}
-{% block title %}Астронавигатор — джйотиш как инструмент{% endblock %}
+{% set active = 'sky' %}
+{% block title %}Астронавигатор — небо сейчас{% endblock %}
 {% block content %}
 
-<section>
+<section style="padding-bottom:24px">
   <div class="container">
     <div class="eyebrow">Джйотиш как инструмент · без мистики</div>
-    <h1 style="font-size:38px;max-width:14em">Есть жизнь в потоке. И есть — через бетон.</h1>
-    <p style="max-width:34em;font-size:18px">
-      Иногда дело не в том, что вы делаете не так, а в том, совпадаете ли вы
-      со своей природой и с текущим периодом. Опоры, топливо, характер этапа —
-      это читается расчётом, а не гаданием.
-    </p>
-    <p style="max-width:34em">
-      Астронавигатор показывает, где вы на карте периодов: какой сейчас фон,
-      что в потоке и что стоит проходить бережнее.
+    <h1 style="font-size:34px;max-width:16em">Небо сейчас — и где вы на его карте</h1>
+    <p class="muted" style="max-width:34em">
+      Текущее положение планет в сидерическом зодиаке (айянамша Лахири). Двигайте
+      шкалу времени, чтобы увидеть, как планеты переходят по знакам. Это общее
+      небо — одинаковое для всех.
     </p>
   </div>
 </section>
 
 <section style="padding-top:0">
   <div class="container">
-    <div class="cards">
-      <div class="card">
-        <div class="icon">🧭</div>
-        <h3>«Через силу третий год»</h3>
-        <p class="muted">Это вы или период? Часто сопротивление — примета этапа, а не приговор вам.</p>
+    <div class="sky-layout">
+      <!-- Карта неба с орбитой-солнышком -->
+      <div class="sky-stage">
+        <div class="orbit"><span class="sun"></span></div>
+        <div class="chart-box" id="sky-chart"></div>
       </div>
-      <div class="card teal">
-        <div class="icon">🗺️</div>
-        <h3>«Старая карта рассыпалась»</h3>
-        <p class="muted">Перелом случается, а опоры остаются. Их видно на расчёте.</p>
-      </div>
-      <div class="card gold">
-        <div class="icon">🧮</div>
-        <h3>«Хочу проверить систему»</h3>
-        <p class="muted">Это расчёт, а не вера. Логику метода можно разобрать по шагам.</p>
+
+      <!-- Панель: шкала времени + позиции -->
+      <div class="sky-panel">
+        <div class="panel">
+          <div class="time-label">
+            <span class="muted">Момент</span>
+            <strong id="time-value">сейчас</strong>
+          </div>
+          <input type="range" id="time-slider" min="-180" max="180" value="0" step="1" class="slider">
+          <div class="slider-scale muted">
+            <span>−180 дн</span><span>сегодня</span><span>+180 дн</span>
+          </div>
+          <button class="btn btn-ghost btn-block" id="reset-time" style="margin-top:12px">Вернуть к «сейчас»</button>
+        </div>
+
+        <div class="panel" style="margin-top:14px">
+          <div class="muted" style="font-size:13px;margin-bottom:8px">Положение планет</div>
+          <div id="positions" class="positions"></div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<section style="padding-top:0">
+<section style="padding-top:8px">
   <div class="container">
-    <div class="form-card" style="max-width:560px">
-      <h2 style="font-size:22px">Построить навигатор</h2>
-      <form id="entry-form">
-        <div class="field">
-          <label>Дата рождения</label>
-          <input name="date" placeholder="ДД.ММ.ГГГГ" required>
-        </div>
-        <div class="field">
-          <label>Время рождения</label>
-          <input name="time" placeholder="ЧЧ:ММ">
-          <label class="checkbox" style="margin-top:8px">
-            <input type="checkbox" name="time_unknown"> не знаю точно
-          </label>
-        </div>
-        <div class="field">
-          <label>Место рождения</label>
-          <input name="place" placeholder="город" required>
-        </div>
-        <div class="field">
-          <label>Город проживания</label>
-          <input name="residence" placeholder="город" required>
-        </div>
-        <button class="btn btn-block" type="submit">Построить навигатор</button>
-        <p class="muted center" style="margin:12px 0 0;font-size:13px">
-          Бесплатно · расчёт за минуту · без регистрации
-        </p>
-      </form>
+    <div class="cta">
+      <h3>Постройте свою карту</h3>
+      <p style="opacity:.85">Введите данные рождения — увидите свою лагну, планеты и текущий период. Бесплатно.</p>
+      <a class="btn" href="/settings">Построить карту</a>
+      <a class="btn" style="background:transparent;border:1px solid #fff;color:#fff" href="/order" data-pay>Оплатить полный доступ</a>
     </div>
-  </div>
-</section>
-
-<section style="padding-top:0">
-  <div class="container">
-    <p class="voice" style="max-width:30em">
-      «Я не говорю, что произойдёт. Я показываю, где вы на карте — и какие
-      дороги сейчас открыты.»
+    <p class="voice" style="max-width:30em;margin-top:24px">
+      «Я не говорю, что произойдёт. Я показываю, где вы на карте — и какие дороги
+      сейчас открыты.»
     </p>
   </div>
 </section>
 
 {% endblock %}
 {% block scripts %}
-<script src="{{ url_for('static', filename='js/forms.js') }}"></script>
+<script src="{{ url_for('static', filename='js/chart.js') }}"></script>
+<script src="{{ url_for('static', filename='js/sky.js') }}"></script>
 {% endblock %}

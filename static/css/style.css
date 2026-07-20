@@ -188,7 +188,41 @@ section { padding: 56px 0; }
   border-radius: 10px; padding: 8px 14px; font-size: 13px; margin-bottom: 18px;
 }
 
+/* --- Страница 1: небо + орбита-солнышко --- */
+.sky-layout { display: grid; grid-template-columns: 1.1fr 1fr; gap: 22px; align-items: start; }
+.sky-stage { position: relative; width: 100%; max-width: 440px; margin: 0 auto; aspect-ratio: 1 / 1; }
+.chart-box { width: 100%; }
+.sky-stage .chart-box { position: absolute; inset: 8%; }
+.orbit {
+  position: absolute; inset: 0; border-radius: 50%;
+  animation: orbit-spin 90s linear infinite;
+}
+.orbit .sun {
+  position: absolute; top: -14px; left: 50%; width: 26px; height: 26px; margin-left: -13px;
+  border-radius: 50%; background: radial-gradient(circle at 40% 40%, #FBD786, #F59E0B);
+  box-shadow: 0 0 16px 4px rgba(245, 158, 11, .45);
+}
+@keyframes orbit-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .orbit { animation: none; } }
+
+.slider { width: 100%; accent-color: var(--violet); margin: 6px 0; }
+.slider-scale { display: flex; justify-content: space-between; font-size: 12px; }
+.time-label { display: flex; justify-content: space-between; align-items: baseline; }
+.time-label strong { font-size: 17px; color: var(--violet-dk); }
+
+.positions { display: grid; gap: 6px; }
+.pos-row { display: grid; grid-template-columns: 5.5em 1fr auto; gap: 8px; font-size: 14px; align-items: baseline; }
+.pos-p { color: var(--text-2); }
+.pos-s { font-weight: 600; }
+.pos-n { font-size: 12.5px; text-align: right; }
+
+.natal-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+
 /* --- Мобильный приоритет --- */
+@media (max-width: 820px) {
+  .sky-layout, .natal-layout { grid-template-columns: 1fr; }
+}
+/* --- Мобильный приоритет (базовый) --- */
 @media (max-width: 720px) {
   section { padding: 40px 0; }
   .cards, .metrics, .pkg, .two-col { grid-template-columns: 1fr; }
