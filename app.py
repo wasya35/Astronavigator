@@ -11,7 +11,7 @@ from pathlib import Path
 import yaml
 from flask import Flask, jsonify, render_template, request
 
-from compute import transits, adapter, daily  # daily — заглушка навигатора дня
+from compute import transits, adapter, aspects, daily  # daily — заглушка навигатора дня
 
 BASE = Path(__file__).resolve().parent
 app = Flask(__name__)
@@ -24,6 +24,7 @@ def _load_yaml(rel: str) -> dict:
 
 SCORING = _load_yaml("config/scoring.yaml")
 TEMPLATES = _load_yaml("content/templates.yaml")
+ASPECT_RULES = _load_yaml("config/aspects.yaml")
 
 
 def _first(items):
@@ -79,6 +80,7 @@ def api_sky():
     except (TypeError, ValueError):
         offset = 0
     data = transits.sky_offset(offset)
+    data["drishti"] = aspects.compute(data["planets"], ASPECT_RULES)
     return jsonify(data)
 
 

@@ -52,16 +52,45 @@
     posEl.innerHTML = rows.join('');
   }
 
+  var ORDER_IDX = {};
+  SIGN_ORDER.forEach(function (c, i) { ORDER_IDX[c] = i; });
+  var aspectsEl = document.getElementById('aspects');
+
+  function renderAspects(dr) {
+    if (!aspectsEl) return;
+    var rows = [];
+    (dr.conjunctions || []).forEach(function (c) {
+      rows.push('<div class="asp-row"><span class="asp-tag conj">соединение</span>' +
+        c.a_ru + ' + ' + c.b_ru + ' <span class="muted">· ' + c.sign_ru + '</span></div>');
+    });
+    var seen = {};
+    (dr.aspects || []).forEach(function (a) {
+      if (a.mutual) {
+        var key = [a.from, a.to].sort().join('-');
+        if (seen[key]) return; seen[key] = 1;
+        rows.push('<div class="asp-row"><span class="asp-tag mut">взаимный</span>' +
+          a.from_ru + ' ↔ ' + a.to_ru + ' <span class="muted">· ' + a.distance + '-й</span></div>');
+      } else {
+        rows.push('<div class="asp-row"><span class="asp-tag spec">аспект</span>' +
+          a.from_ru + ' → ' + a.to_ru + ' <span class="muted">· ' + a.distance + '-й</span></div>');
+      }
+    });
+    aspectsEl.innerHTML = rows.length ? rows.join('') : '<span class="muted">Заметных аспектов нет.</span>';
+  }
+
   var timer = null;
   function load(offset) {
     timeVal.textContent = fmtOffset(offset);
     fetch('/api/sky?offset=' + offset)
       .then(function (r) { return r.json(); })
       .then(function (data) {
+        var dr = data.drishti || {};
         drawRasiChart(chartEl, data, {
           title: 'Небо', subtitle: offset === 0 ? 'сейчас' : fmtOffset(offset),
+          aspects: dr.aspects,
         });
         renderPositions(data.planets);
+        renderAspects(dr);
       })
       .catch(function () { chartEl.innerHTML = '<p class="muted">Не удалось загрузить небо.</p>'; });
   }

@@ -33,6 +33,25 @@
       svg += '<line x1="' + (k * C) + '" y1="0" x2="' + (k * C) + '" y2="' + N + '" stroke="#E7E5DC"/>';
       svg += '<line x1="0" y1="' + (k * C) + '" x2="' + N + '" y2="' + (k * C) + '" stroke="#E7E5DC"/>';
     }
+    // линии аспектов (граха-дришти) между центрами знаков
+    if (opts.aspects && opts.aspects.length) {
+      var drawn = {};
+      opts.aspects.forEach(function (a) {
+        var pf = planets[a.from], pt = planets[a.to];
+        if (!pf || !pt) return;
+        // взаимные рисуем один раз
+        var key = a.mutual ? [a.from, a.to].sort().join('-') : a.from + '>' + a.to;
+        if (drawn[key]) return; drawn[key] = 1;
+        var cf = CELL[pf.sign], ct = CELL[pt.sign];
+        var x1 = ct && cf ? cf[1] * C + C / 2 : null;
+        if (cf[0] === ct[0] && cf[1] === ct[1]) return; // один знак
+        var color = a.special ? '#B7A6E0' : '#CFCBBE';
+        svg += '<line x1="' + (cf[1] * C + C / 2) + '" y1="' + (cf[0] * C + C / 2) +
+          '" x2="' + (ct[1] * C + C / 2) + '" y2="' + (ct[0] * C + C / 2) +
+          '" stroke="' + color + '" stroke-width="1" opacity="0.5"/>';
+      });
+    }
+
     // центр — заголовок
     svg += '<text x="' + (N / 2) + '" y="' + (N / 2 - 8) + '" text-anchor="middle" font-size="20" fill="#26215C">' + esc(opts.title || 'Раси') + '</text>';
     if (opts.subtitle) {

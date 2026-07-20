@@ -225,6 +225,13 @@ section { padding: 56px 0; }
 .pos-s { font-weight: 600; }
 .pos-n { font-size: 12.5px; text-align: right; }
 
+.aspects { display: grid; gap: 6px; }
+.asp-row { font-size: 14px; display: flex; align-items: center; gap: 8px; }
+.asp-tag { font-size: 11px; padding: 2px 8px; border-radius: 20px; white-space: nowrap; }
+.asp-tag.conj { background: var(--gold-bg); color: var(--gold-dk); }
+.asp-tag.mut { background: var(--violet-bg); color: var(--violet); }
+.asp-tag.spec { background: var(--teal-bg); color: var(--teal); }
+
 .natal-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
 
 /* --- Мобильный приоритет --- */
