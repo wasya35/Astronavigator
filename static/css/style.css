@@ -225,6 +225,17 @@ section { padding: 56px 0; }
 .pos-s { font-weight: 600; }
 .pos-n { font-size: 12.5px; text-align: right; }
 
+/* Каскад периодов (стр. 3) */
+.timeline { display: grid; gap: 8px; }
+.tl-row { border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; background: #fff; }
+.tl-row.current { border-color: var(--violet); background: var(--violet-bg); }
+.tl-main { display: flex; align-items: center; gap: 10px; }
+.tl-ruler { font-weight: 600; font-size: 16px; }
+.tl-now { font-size: 11px; background: var(--violet); color: #fff; border-radius: 20px; padding: 2px 9px; }
+.tl-dates { font-size: 13px; margin-top: 2px; }
+.tl-yrs { margin-left: 6px; }
+.tl-bg { font-size: 13.5px; color: var(--text-2); margin-top: 5px; }
+
 .aspects { display: grid; gap: 10px; }
 .asp-item { display: grid; gap: 2px; }
 .asp-note { font-size: 12.5px; line-height: 1.4; padding-left: 2px; }

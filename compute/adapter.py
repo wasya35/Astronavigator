@@ -6,10 +6,12 @@ adapter.py — мост между движком (перенесён из бо�
 при недоступности — локальный справочник основных городов (офлайн-фолбэк,
 чтобы сервис не падал и работал в средах без выхода к геосервисам).
 """
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 from . import astro_engine as ae
 from . import dasha_calc
+
+_DAYS_PER_YEAR = 365.25
 
 # code -> ключ в content/templates.yaml
 RULER_KEY = {
@@ -67,6 +69,64 @@ def _planet_json(pi):
         'retrograde': pi.retrograde,
         'nakshatra_ru': pi.nakshatra_ru,
         'nav_sign': pi.nav_sign, 'nav_sign_ru': pi.nav_sign_ru,
+    }
+
+
+def _period_row(p):
+    """DashaPeriod -> dict с ключом шаблона."""
+    return {
+        'ruler': RULER_KEY[p.planet], 'ruler_ru': p.planet_ru,
+        'start': p.start_str, 'end': p.end_str,
+        'years': p.years, 'is_current': p.is_current,
+    }
+
+
+def _pratyantardashas(antara) -> list:
+    """Пратьянтар-даша (3-й уровень) внутри текущей антардаши.
+
+    Та же вложенная пропорция Вимшоттари, на уровень глубже.
+    Начинается с управителя антардаши.
+    """
+    order = dasha_calc.DASHA_ORDER
+    years = dasha_calc.DASHA_YEARS
+    ru = dasha_calc.PLANETS_RU
+    now = datetime.now(timezone.utc)
+
+    lord_idx = order.index(antara.planet)
+    total = antara.years  # длительность антардаши в годах
+    out = []
+    cur = antara.start
+    for i in range(9):
+        p = order[(lord_idx + i) % 9]
+        yrs = (years[p] / 120.0) * total
+        end = cur + timedelta(days=yrs * _DAYS_PER_YEAR)
+        out.append({
+            'ruler': RULER_KEY[p], 'ruler_ru': ru[p],
+            'start': cur.strftime('%m.%Y'), 'end': end.strftime('%m.%Y'),
+            'years': round(yrs, 2), 'is_current': (cur <= now <= end),
+        })
+        cur = end
+    return out
+
+
+def periods_json(birth: dict) -> dict:
+    """Каскад Вимшоттари: махадаши, антардаши текущей махи, пратьянтар текущей антары."""
+    y, m, d, hh, mm, city = _parse_birth(birth)
+    chart, warning = ae.build_chart(y, m, d, hh, mm, city)
+    dd = dasha_calc.calc_vimshottari(chart.planets['Mo'].longitude, chart.birth_utc)
+
+    return {
+        'profile': {
+            'name': birth.get('name') or 'Гость',
+            'residence': birth.get('residence') or city,
+        },
+        'birth': {'local': chart.birth_local, 'city': chart.city},
+        'mahadashas': [_period_row(p) for p in dd['mahadashas']],
+        'current_maha': _period_row(dd['current_maha']),
+        'antardashas': [_period_row(p) for p in dd['antardashas']],
+        'current_antara': _period_row(dd['current_antara']),
+        'pratyantardashas': _pratyantardashas(dd['current_antara']),
+        'warning': warning,
     }
 
 

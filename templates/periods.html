@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% set active = 'periods' %}
+{% block title %}Периоды — Астронавигатор{% endblock %}
+{% block content %}
+
+<section>
+  <div class="container" style="max-width:860px">
+    <div class="eyebrow">Периоды · по подписке</div>
+    <h1 style="font-size:30px">Каскад периодов</h1>
+    <p class="muted" style="max-width:36em">
+      Вимшоттари-даша: большой цикл (Махадаша) делится на подпериоды (Антардаша)
+      и дальше — Пратьянтардаша. Ниже — где вы сейчас и краткие пояснения.
+    </p>
+
+    <div class="stub-flag">Демо-доступ открыт. На проде страница — по подписке.</div>
+
+    <!-- Нет данных -->
+    <div id="need-data" class="panel" style="display:none;text-align:center">
+      <p>Чтобы увидеть свой каскад, сначала постройте карту.</p>
+      <a class="btn" href="/settings">Ввести данные рождения</a>
+    </div>
+
+    <!-- Результат -->
+    <div id="periods-result" style="display:none">
+      <div class="profile-bar">
+        <div><strong id="p-birth">—</strong></div>
+        <a href="/settings" class="btn-ghost" style="padding:7px 14px;border-radius:10px">изменить</a>
+      </div>
+
+      <!-- Текущий период + советы -->
+      <div class="natal-layout" style="margin-top:14px">
+        <div class="plate violet" style="display:block">
+          <div class="label">Сейчас · Махадаша</div>
+          <div class="value" id="cur-maha" style="font-size:20px;margin:4px 0">—</div>
+          <p id="cur-maha-advice" class="muted" style="margin:0;font-size:14px">—</p>
+        </div>
+        <div class="plate teal" style="display:block">
+          <div class="label">Сейчас · Антардаша</div>
+          <div class="value" id="cur-antar" style="font-size:20px;margin:4px 0">—</div>
+          <p id="cur-antar-advice" class="muted" style="margin:0;font-size:14px">—</p>
+        </div>
+      </div>
+
+      <!-- Линейка махадаш -->
+      <h2 style="font-size:20px;margin-top:28px">Махадаши — на всю жизнь</h2>
+      <div class="timeline" id="maha-list"></div>
+
+      <!-- Антардаши текущей махи -->
+      <h2 style="font-size:20px;margin-top:24px">Антардаши текущей махадаши</h2>
+      <div class="timeline" id="antar-list"></div>
+
+      <!-- Пратьянтар текущей антары -->
+      <h2 style="font-size:20px;margin-top:24px">Пратьянтардаша текущей антардаши</h2>
+      <p class="muted" style="margin-top:-4px;font-size:14px">Третий уровень — самые короткие окна внутри текущего подпериода.</p>
+      <div class="timeline" id="prat-list"></div>
+
+      <div class="cta" style="margin-top:26px">
+        <h3>Полный разбор периодов</h3>
+        <p style="opacity:.85">Разворот периодов на годы вперёд, потенциал и карта года с транзитами.</p>
+        <a class="btn" href="/order" data-pay>Оплатить полный доступ</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/periods.js') }}"></script>
+{% endblock %}

@@ -44,6 +44,12 @@ def settings():
     return render_template("settings.html")
 
 
+@app.route("/periods")
+def periods():
+    # Страница 3 — каскад даш (по подписке; пока демо-открыта)
+    return render_template("periods.html")
+
+
 @app.route("/navigator")
 def navigator():
     return render_template("navigator.html")
@@ -113,6 +119,35 @@ def api_calculate():
     ad_tpl = TEMPLATES["antardasha"][c["antardasha"]["ruler"]]
     c["antardasha"]["background"] = ad_tpl["short"]
     c["antardasha"]["background_full"] = ad_tpl["full"]
+    return jsonify(data)
+
+
+@app.route("/api/periods", methods=["POST"])
+def api_periods():
+    """Каскад Вимшоттари (Маха/Антар/Пратьянтар) + советы. Для стр. 3."""
+    birth = request.get_json(silent=True) or {}
+    if not birth.get("date") or not birth.get("place"):
+        return jsonify({"error": "Нужны дата рождения и место рождения."}), 400
+    try:
+        data = adapter.periods_json(birth)
+    except Exception as e:
+        return jsonify({"error": f"Не удалось рассчитать: {e}"}), 422
+
+    maha_t = TEMPLATES["mahadasha"]
+    antar_t = TEMPLATES["antardasha"]
+
+    for row in data["mahadashas"]:
+        row["background"] = maha_t.get(row["ruler"], {}).get("short", "")
+    for row in data["antardashas"]:
+        row["background"] = antar_t.get(row["ruler"], {}).get("short", "")
+    for row in data["pratyantardashas"]:
+        row["background"] = antar_t.get(row["ruler"], {}).get("short", "")
+
+    # Советы по текущим периодам (2-3 предложения)
+    cm = data["current_maha"]
+    cm["advice"] = maha_t.get(cm["ruler"], {}).get("full", "")
+    ca = data["current_antara"]
+    ca["advice"] = antar_t.get(ca["ruler"], {}).get("full", "")
     return jsonify(data)
 
 
