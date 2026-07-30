@@ -80,7 +80,17 @@ def api_sky():
     except (TypeError, ValueError):
         offset = 0
     data = transits.sky_offset(offset)
-    data["drishti"] = aspects.compute(data["planets"], ASPECT_RULES)
+    dr = aspects.compute(data["planets"], ASPECT_RULES)
+
+    # Слой 3: краткие пояснения к аспектам (по природе аспекта)
+    atext = TEMPLATES.get("aspects", {})
+    by_planet = atext.get("by_planet", {})
+    for a in dr["aspects"]:
+        a["note"] = atext.get("seventh", "") if a["distance"] == 7 else by_planet.get(a["from"], "")
+    for c in dr["conjunctions"]:
+        c["note"] = atext.get("conjunction", "")
+
+    data["drishti"] = dr
     return jsonify(data)
 
 

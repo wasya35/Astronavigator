@@ -225,7 +225,9 @@ section { padding: 56px 0; }
 .pos-s { font-weight: 600; }
 .pos-n { font-size: 12.5px; text-align: right; }
 
-.aspects { display: grid; gap: 6px; }
+.aspects { display: grid; gap: 10px; }
+.asp-item { display: grid; gap: 2px; }
+.asp-note { font-size: 12.5px; line-height: 1.4; padding-left: 2px; }
 .asp-row { font-size: 14px; display: flex; align-items: center; gap: 8px; }
 .asp-tag { font-size: 11px; padding: 2px 8px; border-radius: 20px; white-space: nowrap; }
 .asp-tag.conj { background: var(--gold-bg); color: var(--gold-dk); }

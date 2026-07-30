@@ -58,21 +58,22 @@
 
   function renderAspects(dr) {
     if (!aspectsEl) return;
+    function note(t) { return t ? '<div class="asp-note muted">' + t + '</div>' : ''; }
     var rows = [];
     (dr.conjunctions || []).forEach(function (c) {
-      rows.push('<div class="asp-row"><span class="asp-tag conj">соединение</span>' +
-        c.a_ru + ' + ' + c.b_ru + ' <span class="muted">· ' + c.sign_ru + '</span></div>');
+      rows.push('<div class="asp-item"><div class="asp-row"><span class="asp-tag conj">соединение</span>' +
+        c.a_ru + ' + ' + c.b_ru + ' <span class="muted">· ' + c.sign_ru + '</span></div>' + note(c.note) + '</div>');
     });
     var seen = {};
     (dr.aspects || []).forEach(function (a) {
       if (a.mutual) {
         var key = [a.from, a.to].sort().join('-');
         if (seen[key]) return; seen[key] = 1;
-        rows.push('<div class="asp-row"><span class="asp-tag mut">взаимный</span>' +
-          a.from_ru + ' ↔ ' + a.to_ru + ' <span class="muted">· ' + a.distance + '-й</span></div>');
+        rows.push('<div class="asp-item"><div class="asp-row"><span class="asp-tag mut">взаимный</span>' +
+          a.from_ru + ' ↔ ' + a.to_ru + ' <span class="muted">· ' + a.distance + '-й</span></div>' + note(a.note) + '</div>');
       } else {
-        rows.push('<div class="asp-row"><span class="asp-tag spec">аспект</span>' +
-          a.from_ru + ' → ' + a.to_ru + ' <span class="muted">· ' + a.distance + '-й</span></div>');
+        rows.push('<div class="asp-item"><div class="asp-row"><span class="asp-tag spec">аспект</span>' +
+          a.from_ru + ' → ' + a.to_ru + ' <span class="muted">· ' + a.distance + '-й</span></div>' + note(a.note) + '</div>');
       }
     });
     aspectsEl.innerHTML = rows.length ? rows.join('') : '<span class="muted">Заметных аспектов нет.</span>';
