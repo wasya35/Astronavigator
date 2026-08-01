@@ -25,6 +25,7 @@ def _load_yaml(rel: str) -> dict:
 SCORING = _load_yaml("config/scoring.yaml")
 TEMPLATES = _load_yaml("content/templates.yaml")
 ASPECT_RULES = _load_yaml("config/aspects.yaml")
+NAKSHATRA = _load_yaml("content/nakshatra.yaml")
 
 
 def _first(items):
@@ -92,6 +93,13 @@ def api_sky():
     except (TypeError, ValueError):
         offset = 0
     data = transits.sky_offset(offset)
+
+    # Слой 3: рекомендации по накшатре Луны
+    nak = NAKSHATRA.get(data["moon"]["nakshatra"], {})
+    data["moon"]["nature"] = nak.get("nature", "")
+    data["moon"]["good"] = nak.get("good", [])
+    data["moon"]["avoid"] = nak.get("avoid", [])
+
     dr = aspects.compute(data["planets"], ASPECT_RULES)
 
     # Слой 3: краткие пояснения к аспектам (по природе аспекта)

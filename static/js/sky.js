@@ -79,6 +79,22 @@
     aspectsEl.innerHTML = rows.length ? rows.join('') : '<span class="muted">Заметных аспектов нет.</span>';
   }
 
+  function renderMoon(m) {
+    if (!m) return;
+    var set = function (id, val) { var el = document.getElementById(id); if (el) el.textContent = val; };
+    set('m-tithi', m.tithi + '-й · ' + m.paksha);
+    set('m-sign', m.sign_ru + ' ' + m.degree.toFixed(1) + '°');
+    set('m-phase', m.phase_label + ' · ' + m.illumination + '%');
+    set('m-nak', m.nakshatra_ru);
+    // блок накшатры
+    set('nak-title', m.nakshatra_ru);
+    set('nak-nature', m.nature ? ('характер: ' + m.nature) : '');
+    var good = document.getElementById('nak-good');
+    var avoid = document.getElementById('nak-avoid');
+    if (good) good.textContent = (m.good && m.good.length) ? m.good.join(', ') : 'ровный фон';
+    if (avoid) avoid.textContent = (m.avoid && m.avoid.length) ? m.avoid.join(', ') : 'особых ограничений нет';
+  }
+
   var timer = null;
   function load(offset) {
     timeVal.textContent = fmtOffset(offset);
@@ -92,6 +108,7 @@
         });
         renderPositions(data.planets);
         renderAspects(dr);
+        renderMoon(data.moon);
       })
       .catch(function () { chartEl.innerHTML = '<p class="muted">Не удалось загрузить небо.</p>'; });
   }

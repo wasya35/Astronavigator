@@ -21,13 +21,23 @@
       <!-- Карта неба с орбитой-солнышком -->
       <div class="sky-stage">
         <div class="starfield" id="starfield"></div>
-        <div class="orbit"><span class="sun"></span></div>
+        <span class="sun"></span>
         <div class="chart-box" id="sky-chart"></div>
       </div>
 
-      <!-- Панель: шкала времени + позиции -->
+      <!-- Панель: Луна + шкала времени + позиции -->
       <div class="sky-panel">
-        <div class="panel">
+        <div class="panel moon-card">
+          <div class="muted" style="font-size:13px;margin-bottom:8px">Луна сегодня</div>
+          <div class="moon-grid">
+            <div><div class="mk-k">Лунный день</div><div class="mk-v" id="m-tithi">—</div></div>
+            <div><div class="mk-k">Луна в знаке</div><div class="mk-v" id="m-sign">—</div></div>
+            <div><div class="mk-k">Фаза</div><div class="mk-v" id="m-phase">—</div></div>
+            <div><div class="mk-k">Накшатра</div><div class="mk-v" id="m-nak">—</div></div>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top:14px">
           <div class="time-label">
             <span class="muted">Момент</span>
             <strong id="time-value">сейчас</strong>
@@ -49,6 +59,20 @@
           <div class="muted" style="font-size:12px;margin-bottom:8px">как планеты видят друг друга (граха-дришти)</div>
           <div id="aspects" class="aspects"></div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:8px">
+  <div class="container">
+    <div class="panel">
+      <div style="font-size:13px">Накшатра дня</div>
+      <h3 id="nak-title" style="font-size:20px;margin:2px 0 4px">—</h3>
+      <p class="muted" id="nak-nature" style="margin:0 0 12px;font-size:14px">—</p>
+      <div class="two-col">
+        <div class="note-flow"><div class="k">Благоприятно</div><span id="nak-good">—</span></div>
+        <div class="note-care"><div class="k">С осторожностью</div><span id="nak-avoid">—</span></div>
       </div>
     </div>
   </div>

@@ -3,6 +3,7 @@ transits.py — транзитное («на сейчас» или на зада
 Та же база, что в натальном движке: pyswisseph, сидерика, айянамша Лахири.
 Для страницы 1 (небо для всех) и шкалы времени.
 """
+import math
 import swisseph as swe
 from datetime import datetime, timezone, timedelta
 
@@ -76,6 +77,25 @@ def sky_at(dt_utc: datetime = None) -> dict:
         'ayanamsha': 'lahiri',
         'zodiac': 'sidereal',
         'planets': planets,
+        'moon': _moon_summary(planets['Su']['longitude'], planets['Mo']),
+    }
+
+
+def _moon_summary(sun_lon: float, moon: dict) -> dict:
+    """Лунные сутки: титхи (лунный день), пакша, фаза освещённости, накшатра."""
+    elong = (moon['longitude'] - sun_lon) % 360        # угол Луна−Солнце
+    tithi = int(elong / 12) + 1                         # 1..30
+    waxing = elong < 180                                # растущая до полнолуния
+    illum = round((1 - math.cos(math.radians(elong))) / 2 * 100)
+    return {
+        'sign_ru': moon['sign_ru'],
+        'degree': moon['degree'],
+        'nakshatra': moon['nakshatra'],
+        'nakshatra_ru': moon['nakshatra_ru'],
+        'tithi': tithi,
+        'paksha': 'Шукла · растущая' if waxing else 'Кришна · убывающая',
+        'phase_label': 'Растущая Луна' if waxing else 'Убывающая Луна',
+        'illumination': illum,
     }
 
 
