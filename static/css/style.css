@@ -210,12 +210,23 @@ section { padding: 56px 0; }
   50% { opacity: .65; transform: scale(1.1); } }
 @media (prefers-reduced-motion: reduce) { .star { animation: none; opacity: .3; } }
 
-/* Солнце едет вдоль кромки квадрата карты (chart-box inset 8% → углы на 8%/92%) */
+/* Солнце с лучиками едет вдоль кромки квадрата (углы на 8%/92%),
+   медленно (52с на круг) и делает 360° на каждом углу. */
 .sun {
-  position: absolute; z-index: 3; width: 24px; height: 24px; margin: -12px;
-  border-radius: 50%; background: radial-gradient(circle at 40% 40%, #FBD786, #F59E0B);
-  box-shadow: 0 0 16px 4px rgba(245, 158, 11, .45);
-  animation: sun-square 26s linear infinite;
+  position: absolute; z-index: 3; width: 34px; height: 34px; margin: -17px;
+  animation: sun-square 52s linear infinite, sun-corner-spin 52s linear infinite;
+}
+.sun::before {  /* лучики */
+  content: ""; position: absolute; inset: -8px; border-radius: 50%;
+  background: repeating-conic-gradient(#F5A623 0deg 3deg, transparent 3deg 30deg);
+  -webkit-mask: radial-gradient(closest-side, transparent 54%, #000 57%);
+  mask: radial-gradient(closest-side, transparent 54%, #000 57%);
+  opacity: .85;
+}
+.sun::after {  /* ядро */
+  content: ""; position: absolute; inset: 6px; border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, #FBD786, #F59E0B);
+  box-shadow: 0 0 15px 4px rgba(245, 158, 11, .45);
 }
 @keyframes sun-square {
   0%   { left: 8%;  top: 8%; }
@@ -223,6 +234,16 @@ section { padding: 56px 0; }
   50%  { left: 92%; top: 92%; }
   75%  { left: 8%;  top: 92%; }
   100% { left: 8%;  top: 8%; }
+}
+@keyframes sun-corner-spin {   /* держит ровно на гранях, крутит 360° на углах */
+  0%, 20%  { transform: rotate(0deg); }
+  25%      { transform: rotate(360deg); }
+  45%      { transform: rotate(360deg); }
+  50%      { transform: rotate(720deg); }
+  70%      { transform: rotate(720deg); }
+  75%      { transform: rotate(1080deg); }
+  95%      { transform: rotate(1080deg); }
+  100%     { transform: rotate(1440deg); }
 }
 @media (prefers-reduced-motion: reduce) { .sun { animation: none; left: 50%; top: 8%; } }
 

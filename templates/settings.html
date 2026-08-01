@@ -35,8 +35,13 @@
       <div class="natal-layout" style="margin-top:14px">
         <div class="panel chart-box" id="natal-chart"></div>
         <div class="panel">
-          <h3 style="font-size:18px;margin-bottom:6px">Лагна</h3>
-          <p id="r-lagna" style="margin-bottom:12px">—</p>
+          <div class="muted" style="font-size:13px;margin-bottom:8px">Лагна</div>
+          <div class="moon-grid" style="margin-bottom:16px">
+            <div class="mk violet"><div class="mk-k">Знак</div><div class="mk-v" id="r-lagna-sign">—</div></div>
+            <div class="mk gold"><div class="mk-k">Градус</div><div class="mk-v" id="r-lagna-deg">—</div></div>
+            <div class="mk teal"><div class="mk-k">Накшатра</div><div class="mk-v" id="r-lagna-nak">—</div></div>
+            <div class="mk coral"><div class="mk-k">Навамша-лагна</div><div class="mk-v" id="r-lagna-nav">—</div></div>
+          </div>
           <div class="muted" style="font-size:13px;margin-bottom:6px">Планеты</div>
           <div id="r-planets" class="positions"></div>
         </div>

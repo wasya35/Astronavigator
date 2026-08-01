@@ -26,9 +26,11 @@
     result.style.display = 'block';
     document.getElementById('r-birth').textContent = data.birth.local + ' · ' + data.birth.city;
     var lg = data.lagna;
-    document.getElementById('r-lagna').innerHTML =
-      '<strong>' + lg.sign_ru + '</strong> ' + lg.degree.toFixed(1) + '° · накшатра ' + lg.nakshatra_ru +
-      '<br><span class="muted">Навамша-лагна: ' + lg.nav_sign_ru + '</span>';
+    var setv = function (id, v) { var el = document.getElementById(id); if (el) el.textContent = v; };
+    setv('r-lagna-sign', lg.sign_ru);
+    setv('r-lagna-deg', lg.degree.toFixed(1) + '°');
+    setv('r-lagna-nak', lg.nakshatra_ru);
+    setv('r-lagna-nav', lg.nav_sign_ru);
     document.getElementById('r-planets').innerHTML = renderPlanets(data.planets);
     drawRasiChart(document.getElementById('natal-chart'), data, {
       lagnaSign: lg.sign, title: 'Раси', subtitle: 'D1',
