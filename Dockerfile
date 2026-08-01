@@ -12,6 +12,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# Площадка обычно задаёт порт через $PORT; иначе слушаем 8080.
+# Слушаем фиксированно 8080 (совпадает с EXPOSE и с портом, который
+# площадка обнаруживает и проверяет healthcheck-ом).
+# --preload: импорт приложения один раз в мастере -> быстрее старт, меньше памяти.
 EXPOSE 8080
-CMD ["sh", "-c", "gunicorn app:app --bind 0.0.0.0:${PORT:-8080} --workers 2"]
+CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:8080", "--workers", "2", \
+     "--timeout", "120", "--preload", "--access-logfile", "-", "--error-logfile", "-"]
