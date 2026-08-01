@@ -17,6 +17,7 @@
 }
 
 * { box-sizing: border-box; }
+html, body { overflow-x: hidden; }
 html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
@@ -199,7 +200,7 @@ section { padding: 56px 0; }
 .sky-panel { display: flex; flex-direction: column; gap: 14px; }
 .sky-stage { position: relative; width: 100%; max-width: 440px; margin: 0 auto; aspect-ratio: 1 / 1; }
 .chart-box { width: 100%; }
-.sky-stage .chart-box { position: absolute; inset: 8%; z-index: 2; }
+.sky-stage .chart-box { position: absolute; inset: 8%; width: auto; z-index: 2; }
 
 /* Деликатное мерцание звёзд вокруг карты (астрономично, без мистики) */
 .starfield { position: absolute; inset: -8%; z-index: 0; pointer-events: none; }
@@ -236,6 +237,14 @@ section { padding: 56px 0; }
 .mk-v { font-size: 15px; font-weight: 600; line-height: 1.25; }
 
 .slider { width: 100%; accent-color: var(--violet); margin: 6px 0; }
+.time-steps { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; }
+.time-steps .step {
+  width: 42px; height: 42px; flex: 0 0 auto; border: 1px solid var(--line);
+  background: #fff; border-radius: 10px; font-size: 18px; line-height: 1;
+  color: var(--violet); cursor: pointer; transition: background .15s;
+}
+.time-steps .step:hover { background: var(--violet-bg); }
+.time-steps .btn-ghost { padding: 10px 16px; white-space: nowrap; }
 .slider-scale { display: flex; justify-content: space-between; font-size: 12px; }
 .time-label { display: flex; justify-content: space-between; align-items: baseline; }
 .time-label strong { font-size: 17px; color: var(--violet-dk); }

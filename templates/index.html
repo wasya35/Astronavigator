@@ -51,7 +51,13 @@
           <div class="slider-scale muted">
             <span>−180 дн</span><span>сегодня</span><span>+180 дн</span>
           </div>
-          <button class="btn btn-ghost btn-block" id="reset-time" style="margin-top:12px">Вернуть к «сейчас»</button>
+          <div class="time-steps">
+            <button class="step" data-step="-7" title="−7 дней" aria-label="минус 7 дней">‹‹</button>
+            <button class="step" data-step="-1" title="−1 день" aria-label="минус 1 день">‹</button>
+            <button class="btn btn-ghost" id="reset-time">Сейчас</button>
+            <button class="step" data-step="1" title="+1 день" aria-label="плюс 1 день">›</button>
+            <button class="step" data-step="7" title="+7 дней" aria-label="плюс 7 дней">››</button>
+          </div>
         </div>
 
         <div class="panel">

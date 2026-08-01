@@ -139,5 +139,16 @@
     slider.value = 0; load(0);
   });
 
+  // Кнопки-стрелки: шаг ±1 / ±7 дней (как в Дж.Хоре)
+  var lo = parseInt(slider.min, 10), hi = parseInt(slider.max, 10);
+  Array.prototype.forEach.call(document.querySelectorAll('.time-steps .step'), function (btn) {
+    btn.addEventListener('click', function () {
+      var nv = parseInt(slider.value, 10) + parseInt(btn.getAttribute('data-step'), 10);
+      nv = Math.max(lo, Math.min(hi, nv));
+      slider.value = nv;
+      load(nv);
+    });
+  });
+
   load(0);
 })();
