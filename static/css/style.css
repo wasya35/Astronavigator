@@ -266,6 +266,14 @@ section { padding: 56px 0; }
 .asp-tag.mut { background: var(--violet-bg); color: var(--violet); }
 .asp-tag.spec { background: var(--teal-bg); color: var(--teal); }
 
+/* Блок «Накшатра дня» (описание) */
+.nak-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 18px; font-size: 13.5px; line-height: 1.5; }
+.nm-k { font-weight: 600; color: var(--text); }
+.nak-list { margin: 6px 0 0; padding-left: 18px; }
+.nak-list li { margin-bottom: 5px; font-size: 14px; line-height: 1.45; }
+.nak-tuning { margin: 16px 0 0; font-family: var(--serif); font-style: italic; font-size: 17px; color: var(--violet-dk); }
+@media (max-width: 720px) { .nak-meta { grid-template-columns: 1fr; } }
+
 .natal-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
 
 /* --- Мобильный приоритет --- */

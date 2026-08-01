@@ -93,13 +93,20 @@
     set('m-sign', m.sign_ru + ' ' + m.degree.toFixed(1) + '°');
     set('m-phase', m.phase_label + ' · ' + m.illumination + '%');
     set('m-nak', m.nakshatra_ru);
-    // блок накшатры
+    // блок накшатры (описание из документов владельца)
     set('nak-title', m.nakshatra_ru);
-    set('nak-nature', m.nature ? ('характер: ' + m.nature) : '');
-    var good = document.getElementById('nak-good');
-    var avoid = document.getElementById('nak-avoid');
-    if (good) good.textContent = (m.good && m.good.length) ? m.good.join(', ') : 'ровный фон';
-    if (avoid) avoid.textContent = (m.avoid && m.avoid.length) ? m.avoid.join(', ') : 'особых ограничений нет';
+    set('nak-fon', m.fon || '');
+    set('nak-amp', m.amplifies || '');
+    set('nak-dist', m.distorts || '');
+    var list = function (id, items, empty) {
+      var el = document.getElementById(id); if (!el) return;
+      if (items && items.length) {
+        el.innerHTML = items.map(function (x) { return '<li>' + x + '</li>'; }).join('');
+      } else { el.innerHTML = '<li>' + empty + '</li>'; }
+    };
+    list('nak-good', m.good, 'ровный фон');
+    list('nak-avoid', m.avoid, 'особых ограничений нет');
+    set('nak-tuning', m.tuning ? ('«' + m.tuning + '»') : '');
   }
 
   var timer = null;

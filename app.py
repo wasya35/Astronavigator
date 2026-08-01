@@ -94,9 +94,10 @@ def api_sky():
         offset = 0
     data = transits.sky_offset(offset)
 
-    # Слой 3: рекомендации по накшатре Луны
+    # Слой 3: описание накшатры Луны (фон + благоприятно/осторожно + камертон)
     nak = NAKSHATRA.get(data["moon"]["nakshatra"], {})
-    data["moon"]["nature"] = nak.get("nature", "")
+    for key in ("fon", "amplifies", "distorts", "tuning"):
+        data["moon"][key] = nak.get(key, "")
     data["moon"]["good"] = nak.get("good", [])
     data["moon"]["avoid"] = nak.get("avoid", [])
 
