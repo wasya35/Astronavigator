@@ -33,6 +33,13 @@
     });
   })();
 
+  function fmtDate(off) {
+    var d = new Date(Date.now() + off * 86400000);
+    var dm = d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
+    var wd = d.toLocaleDateString('ru-RU', { weekday: 'long' });
+    return dm + ', ' + wd;
+  }
+
   function fmtOffset(off) {
     if (off === 0) return 'сейчас';
     var d = new Date(Date.now() + off * 86400000);
@@ -98,6 +105,8 @@
   var timer = null;
   function load(offset) {
     timeVal.textContent = fmtOffset(offset);
+    var md = document.getElementById('moon-date');
+    if (md) md.textContent = fmtDate(offset);
     fetch('/api/sky?offset=' + offset)
       .then(function (r) { return r.json(); })
       .then(function (data) {

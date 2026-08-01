@@ -3,41 +3,46 @@
 {% block title %}Астронавигатор — небо сейчас{% endblock %}
 {% block content %}
 
-<section style="padding-bottom:24px">
+<section>
   <div class="container">
-    <div class="eyebrow">Джйотиш как инструмент · без мистики</div>
-    <h1 style="font-size:34px;max-width:16em">Небо сейчас — и где вы на его карте</h1>
-    <p class="muted" style="max-width:34em">
-      Текущее положение планет в сидерическом зодиаке (айянамша Лахири). Двигайте
-      шкалу времени, чтобы увидеть, как планеты переходят по знакам. Это общее
-      небо — одинаковое для всех.
-    </p>
+    <div class="hero-grid">
+      <div class="hero-text">
+        <div class="eyebrow">Джйотиш как инструмент · без мистики</div>
+        <h1 style="font-size:34px">Небо сейчас — и где вы на его карте</h1>
+        <p class="muted" style="max-width:32em">
+          Текущее положение планет в сидерическом зодиаке (айянамша Лахири).
+          Двигайте шкалу времени, чтобы увидеть, как планеты переходят по знакам.
+          Это общее небо — одинаковое для всех.
+        </p>
+      </div>
+
+      <!-- Луна сегодня — вровень с заголовком -->
+      <aside class="panel moon-card">
+        <div class="moon-date"><strong id="moon-date">—</strong></div>
+        <div class="moon-grid">
+          <div class="mk gold"><div class="mk-k">Лунный день</div><div class="mk-v" id="m-tithi">—</div></div>
+          <div class="mk violet"><div class="mk-k">Луна в знаке</div><div class="mk-v" id="m-sign">—</div></div>
+          <div class="mk teal"><div class="mk-k">Фаза</div><div class="mk-v" id="m-phase">—</div></div>
+          <div class="mk coral"><div class="mk-k">Накшатра</div><div class="mk-v" id="m-nak">—</div></div>
+        </div>
+      </aside>
+    </div>
   </div>
 </section>
 
-<section style="padding-top:0">
+<section style="padding-top:8px">
   <div class="container">
     <div class="sky-layout">
-      <!-- Карта неба с орбитой-солнышком -->
+      <!-- Карта неба с солнышком по кромке -->
       <div class="sky-stage">
         <div class="starfield" id="starfield"></div>
         <span class="sun"></span>
         <div class="chart-box" id="sky-chart"></div>
       </div>
 
-      <!-- Панель: Луна + шкала времени + позиции -->
+      <!-- Панель: шкала времени + позиции + аспекты -->
       <div class="sky-panel">
-        <div class="panel moon-card">
-          <div class="muted" style="font-size:13px;margin-bottom:8px">Луна сегодня</div>
-          <div class="moon-grid">
-            <div><div class="mk-k">Лунный день</div><div class="mk-v" id="m-tithi">—</div></div>
-            <div><div class="mk-k">Луна в знаке</div><div class="mk-v" id="m-sign">—</div></div>
-            <div><div class="mk-k">Фаза</div><div class="mk-v" id="m-phase">—</div></div>
-            <div><div class="mk-k">Накшатра</div><div class="mk-v" id="m-nak">—</div></div>
-          </div>
-        </div>
-
-        <div class="panel" style="margin-top:14px">
+        <div class="panel">
           <div class="time-label">
             <span class="muted">Момент</span>
             <strong id="time-value">сейчас</strong>
@@ -49,12 +54,12 @@
           <button class="btn btn-ghost btn-block" id="reset-time" style="margin-top:12px">Вернуть к «сейчас»</button>
         </div>
 
-        <div class="panel" style="margin-top:14px">
+        <div class="panel">
           <div class="muted" style="font-size:13px;margin-bottom:8px">Положение планет</div>
           <div id="positions" class="positions"></div>
         </div>
 
-        <div class="panel" style="margin-top:14px">
+        <div class="panel">
           <div style="font-size:13px;margin-bottom:2px">Аспекты дня</div>
           <div class="muted" style="font-size:12px;margin-bottom:8px">как планеты видят друг друга (граха-дришти)</div>
           <div id="aspects" class="aspects"></div>
