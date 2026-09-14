@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Астронавигатор — небо сейчас</title>
+  <meta name="description" content="Аналитический джйотиш без мистики: где вы на карте периодов и какие дороги сейчас открыты.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="index.html"><span class="compass"></span> Астронавигатор</a>
+      <nav class="nav">
+        <a href="index.html" class="active">Небо</a>
+        <a href="settings.html">Моя карта</a>
+        <a href="periods.html">Периоды</a>
+        <a href="order.html">Разбор</a>
+        <a href="method.html">О методе</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-text">
+            <div class="eyebrow">Джйотиш как инструмент · без мистики</div>
+            <h1 style="font-size:34px">Небо сейчас — и где вы на его карте</h1>
+            <p class="muted" style="max-width:32em">
+              Текущее положение планет в сидерическом зодиаке (айянамша Лахири).
+              Двигайте шкалу времени, чтобы увидеть, как планеты переходят по знакам.
+              Это общее небо — одинаковое для всех.
+            </p>
+          </div>
+          <aside class="panel moon-card">
+            <div class="moon-date"><strong id="moon-date">—</strong></div>
+            <div class="moon-grid">
+              <div class="mk gold"><div class="mk-k">Лунный день</div><div class="mk-v" id="m-tithi">—</div></div>
+              <div class="mk violet"><div class="mk-k">Луна в знаке</div><div class="mk-v" id="m-sign">—</div></div>
+              <div class="mk teal"><div class="mk-k">Фаза</div><div class="mk-v" id="m-phase">—</div></div>
+              <div class="mk coral"><div class="mk-k">Накшатра</div><div class="mk-v" id="m-nak">—</div></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding-top:8px">
+      <div class="container">
+        <div class="sky-layout">
+          <div class="sky-stage">
+            <div class="starfield" id="starfield"></div>
+            <span class="sun"></span>
+            <div class="chart-box" id="sky-chart"></div>
+          </div>
+          <div class="sky-panel">
+            <div class="panel">
+              <div class="time-label"><span class="muted">Момент</span><strong id="time-value">сейчас</strong></div>
+              <input type="range" id="time-slider" min="-180" max="180" value="0" step="1" class="slider">
+              <div class="slider-scale muted"><span>−180 дн</span><span>сегодня</span><span>+180 дн</span></div>
+              <div class="time-steps">
+                <button class="step" data-step="-7" title="−7 дней" aria-label="минус 7 дней">‹‹</button>
+                <button class="step" data-step="-1" title="−1 день" aria-label="минус 1 день">‹</button>
+                <button class="btn btn-ghost" id="reset-time">Сейчас</button>
+                <button class="step" data-step="1" title="+1 день" aria-label="плюс 1 день">›</button>
+                <button class="step" data-step="7" title="+7 дней" aria-label="плюс 7 дней">››</button>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="muted" style="font-size:13px;margin-bottom:8px">Положение планет</div>
+              <div id="positions" class="positions"></div>
+            </div>
+            <div class="panel">
+              <div style="font-size:13px;margin-bottom:2px">Аспекты дня</div>
+              <div class="muted" style="font-size:12px;margin-bottom:8px">как планеты видят друг друга (граха-дришти)</div>
+              <div id="aspects" class="aspects"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding-top:8px">
+      <div class="container">
+        <div class="panel">
+          <div style="font-size:13px">Накшатра дня</div>
+          <h3 id="nak-title" style="font-size:22px;margin:2px 0 8px">—</h3>
+          <p id="nak-fon" style="margin:0 0 12px;max-width:62em">—</p>
+          <div class="nak-meta">
+            <div><span class="nm-k">Усиливается:</span> <span id="nak-amp" class="muted"></span></div>
+            <div><span class="nm-k">Искажается:</span> <span id="nak-dist" class="muted"></span></div>
+          </div>
+          <div class="two-col" style="margin-top:14px">
+            <div class="note-flow"><div class="k">Благоприятно</div><ul id="nak-good" class="nak-list"></ul></div>
+            <div class="note-care"><div class="k">С осторожностью</div><ul id="nak-avoid" class="nak-list"></ul></div>
+          </div>
+          <p class="nak-tuning" id="nak-tuning"></p>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding-top:8px">
+      <div class="container">
+        <div class="cta">
+          <h3>Постройте свою карту</h3>
+          <p style="opacity:.85">Введите данные рождения — увидите свою лагну, планеты и текущий период. Бесплатно.</p>
+          <a class="btn" href="settings.html">Построить карту</a>
+          <a class="btn" style="background:transparent;border:1px solid #fff;color:#fff" href="order.html">Оплатить полный доступ</a>
+        </div>
+        <p class="voice" style="max-width:30em;margin-top:24px">
+          «Я не говорю, что произойдёт. Я показываю, где вы на карте — и какие дороги сейчас открыты.»
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      Астронавигатор · аналитический джйотиш без мистики<br>
+      <a href="privacy.html">Политика конфиденциальности</a> ·
+      <a href="offer.html">Публичная оферта</a>
+    </div>
+  </footer>
+
+  <script src="vendor/astronomy.browser.min.js"></script>
+  <script src="js/astro.js"></script>
+  <script src="js/content.js"></script>
+  <script src="js/cities.js"></script>
+  <script src="js/jyotish.js"></script>
+  <script src="js/chart.js"></script>
+  <script src="js/sky.js"></script>
+</body>
+</html>

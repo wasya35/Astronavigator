@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Периоды — Астронавигатор</title>
+  <meta name="description" content="Каскад Вимшоттари-даши: где вы сейчас и краткие пояснения к периодам.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="index.html"><span class="compass"></span> Астронавигатор</a>
+      <nav class="nav">
+        <a href="index.html">Небо</a>
+        <a href="settings.html">Моя карта</a>
+        <a href="periods.html" class="active">Периоды</a>
+        <a href="order.html">Разбор</a>
+        <a href="method.html">О методе</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <div class="container" style="max-width:860px">
+        <div class="eyebrow">Периоды · по подписке</div>
+        <h1 style="font-size:30px">Каскад периодов</h1>
+        <p class="muted" style="max-width:36em">
+          Вимшоттари-даша: большой цикл (Махадаша) делится на подпериоды (Антардаша)
+          и дальше — Пратьянтардаша. Ниже — где вы сейчас и краткие пояснения.
+        </p>
+
+        <div class="stub-flag">Демо-доступ открыт. На проде страница — по подписке.</div>
+
+        <div id="need-data" class="panel" style="display:none;text-align:center">
+          <p>Чтобы увидеть свой каскад, сначала постройте карту.</p>
+          <a class="btn" href="settings.html">Ввести данные рождения</a>
+        </div>
+
+        <div id="periods-result" style="display:none">
+          <div class="profile-bar">
+            <div><strong id="p-birth">—</strong></div>
+            <a href="settings.html" class="btn-ghost" style="padding:7px 14px;border-radius:10px">изменить</a>
+          </div>
+
+          <div class="natal-layout" style="margin-top:14px">
+            <div class="plate violet" style="display:block">
+              <div class="label">Сейчас · Махадаша</div>
+              <div class="value" id="cur-maha" style="font-size:20px;margin:4px 0">—</div>
+              <p id="cur-maha-advice" class="muted" style="margin:0;font-size:14px">—</p>
+            </div>
+            <div class="plate teal" style="display:block">
+              <div class="label">Сейчас · Антардаша</div>
+              <div class="value" id="cur-antar" style="font-size:20px;margin:4px 0">—</div>
+              <p id="cur-antar-advice" class="muted" style="margin:0;font-size:14px">—</p>
+            </div>
+          </div>
+
+          <h2 style="font-size:20px;margin-top:28px">Махадаши — на всю жизнь</h2>
+          <div class="timeline" id="maha-list"></div>
+
+          <h2 style="font-size:20px;margin-top:24px">Антардаши текущей махадаши</h2>
+          <div class="timeline" id="antar-list"></div>
+
+          <h2 style="font-size:20px;margin-top:24px">Пратьянтардаша текущей антардаши</h2>
+          <p class="muted" style="margin-top:-4px;font-size:14px">Третий уровень — самые короткие окна внутри текущего подпериода.</p>
+          <div class="timeline" id="prat-list"></div>
+
+          <div class="cta" style="margin-top:26px">
+            <h3>Полный разбор периодов</h3>
+            <p style="opacity:.85">Разворот периодов на годы вперёд, потенциал и карта года с транзитами.</p>
+            <a class="btn" href="order.html">Оплатить полный доступ</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      Астронавигатор · аналитический джйотиш без мистики<br>
+      <a href="privacy.html">Политика конфиденциальности</a> ·
+      <a href="offer.html">Публичная оферта</a>
+    </div>
+  </footer>
+
+  <script src="vendor/astronomy.browser.min.js"></script>
+  <script src="js/astro.js"></script>
+  <script src="js/content.js"></script>
+  <script src="js/cities.js"></script>
+  <script src="js/jyotish.js"></script>
+  <script src="js/periods.js"></script>
+</body>
+</html>
