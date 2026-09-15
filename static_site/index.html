@@ -56,6 +56,19 @@
             <div class="chart-box" id="sky-chart"></div>
           </div>
           <div class="sky-panel">
+            <div class="panel sbc-panel" id="sbc-panel">
+              <div class="sbc-head">
+                <div>
+                  <div style="font-size:13px">Барометр дня · СБЧ</div>
+                  <div class="muted" id="sbc-scope" style="font-size:12px">по вашей накшатре рождения</div>
+                </div>
+                <div class="sbc-badge" id="sbc-badge">—</div>
+              </div>
+              <div class="sbc-gauge"><span class="sbc-fill" id="sbc-fill"></span></div>
+              <svg class="sbc-spark" id="sbc-spark" viewBox="0 0 300 46" preserveAspectRatio="none" aria-hidden="true"></svg>
+              <p class="sbc-note muted" id="sbc-note">Постройте карту, чтобы увидеть барометр дня по вашей накшатре рождения.</p>
+              <a class="btn btn-ghost sbc-cta" id="sbc-cta" href="settings.html">Построить карту</a>
+            </div>
             <div class="panel">
               <div class="time-label"><span class="muted">Момент</span><strong id="time-value">сейчас</strong></div>
               <input type="range" id="time-slider" min="-180" max="180" value="0" step="1" class="slider">
@@ -129,6 +142,7 @@
   <script src="js/content.js"></script>
   <script src="js/cities.js"></script>
   <script src="js/jyotish.js"></script>
+  <script src="js/sbc.js"></script>
   <script src="js/chart.js"></script>
   <script src="js/sky.js"></script>
 </body>
