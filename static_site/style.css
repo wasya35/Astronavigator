@@ -359,3 +359,18 @@ section { padding: 56px 0; }
 .sbc-cta { align-self: flex-start; }
 .sbc-panel:not(.sbc-empty) .sbc-cta { display: none; }
 .sbc-empty .sbc-gauge, .sbc-empty .sbc-spark { opacity: .35; }
+
+/* --- Полоса «ТАБЛИЦЫ» + Аштакаварга-квадраты --- */
+.tables-wrap { margin-top: 24px; border-top: 1px solid var(--line); padding-top: 12px; }
+.tables-toggle {
+  display: flex; align-items: center; gap: 8px; width: 100%;
+  background: none; border: none; cursor: pointer; padding: 8px 0;
+  font-family: var(--sans); font-size: 15px; font-weight: 600; letter-spacing: .12em;
+  color: var(--violet-dk); text-align: left;
+}
+.tables-toggle .chev { transition: transform .18s ease; display: inline-block; color: var(--violet); }
+.tables-toggle.open .chev { transform: rotate(90deg); }
+.tables-body { padding-top: 6px; }
+.av-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.av-cell { background: #fff; border-radius: 8px; }
+@media (max-width: 620px) { .av-grid { grid-template-columns: repeat(2, 1fr); } }
