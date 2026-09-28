@@ -83,10 +83,10 @@
         var savcls = savv >= 30 ? 's-hi' : (savv >= 25 ? 's-mid' : 's-lo');
         return '<tr><td>' + AV_RU[p] + '</td>' +
           '<td class="' + vcls + '">' + (vv == null ? '—' : vv.toFixed(2)) + '</td>' +
-          '<td class="' + scls + '">' + (sp == null ? '—' : sp.rupa.toFixed(2) + ' · ' + sp.ratio.toFixed(2) + '×') + '</td>' +
+          '<td class="' + scls + '">' + (sp == null ? '—' : sp.rupa.toFixed(2) + ' · ' + (sp.ratio * 100).toFixed(1) + '%') + '</td>' +
           '<td class="' + savcls + '">' + savv + '</td></tr>';
       }).join('');
-      st.innerHTML = '<table class="tbl"><thead><tr><th>Планета</th><th>Вимшопака</th><th>Шадбала (рупы · доля)</th><th>САВ</th></tr></thead><tbody>' + rows + '</tbody></table>';
+      st.innerHTML = '<table class="tbl"><thead><tr><th>Планета</th><th>Вимшопака</th><th>Шадбала (рупы · %)</th><th>САВ</th></tr></thead><tbody>' + rows + '</tbody></table>';
     }
   }
 
