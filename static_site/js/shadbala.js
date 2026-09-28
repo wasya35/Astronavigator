@@ -91,13 +91,10 @@
         return eq.dec;
       } catch (e) { return 0; }
     }
-    // базовая аяна (0..60, без удвоения Солнца)
+    // аяна (формула J.Hora): (24 ± dec)×1.25; минус для Луны/Сатурна, плюс остальным
     function ayanaRaw(p) {
-      var d = declination(p), val;
-      if (p === 'Mo' || p === 'Sa') val = (24 - d) / 48 * 60;      // южные
-      else if (p === 'Me') val = (24 + Math.abs(d)) / 48 * 60;     // всегда
-      else val = (24 + d) / 48 * 60;                                // северные (Су,Ма,Юп,Ве)
-      return Math.max(0, Math.min(60, val));
+      var d = declination(p);
+      return (p === 'Mo' || p === 'Sa') ? (24 - d) * 1.25 : (24 + d) * 1.25;
     }
     var moonPakshaBase = fold180(moonL - sunL) / 3;      // пакша Луны без удвоения (для чешты)
 
@@ -121,12 +118,21 @@
     var isDay = kalaOk && ts >= riseMs && ts < setMs;
 
     // вара-правитель (с поправкой на восход)
-    var varaLord = null, tzOff = (ctx.tzOffMin || 0) * 60000;
-    if (kalaOk) {
-      // ведический день начинается на восходе; берём ЛОКАЛЬНУЮ дату этого восхода
-      varaLord = WEEKDAY_LORD[new Date(riseMs + tzOff).getUTCDay()];
-    }
-    function vara(p) { return (kalaOk && p === varaLord) ? 45 : 0; }
+    // ── абда/маса/вара — правители по ahargana (формула PyJHora, сверено с J.Hora)
+    var ABDA_WD = [2, 3, 4, 5, 6, 0, 1];                 // индекс дня -> id планеты 0..6
+    function daysSinceBase(yr, by, bd) { var t = yr - by, lp = 0; for (var y2 = by + 1; y2 <= yr; y2++) if ((y2 % 4 === 0 && y2 % 100 !== 0) || y2 % 400 === 0) lp++; return bd + lp * 366 + (t - lp) * 365; }
+    var jdUT = ts / 86400000 + 2440587.5;
+    var yr = ctx.year, jdYearStart = Date.UTC(yr, 0, 1) / 86400000 + 2440587.5;
+    var elapsedDays = Math.trunc(jdUT - jdYearStart + 1);
+    var ahar = daysSinceBase(yr - 1, 1951, 174) + elapsedDays;
+    var aharV = daysSinceBase(yr - 1, 1827, 244) + elapsedDays;
+    if (kalaOk && ts < riseMs) aharV -= 1;
+    var abdaLord = PL[ABDA_WD[((Math.trunc(ahar / 360) * 3 + 1) % 7 + 7) % 7]];
+    var masaLord = PL[ABDA_WD[((Math.trunc(ahar / 30) * 2 + 1) % 7 + 7) % 7]];
+    var varaLord = PL[ABDA_WD[(Math.trunc(aharV) % 7 + 7) % 7]];
+    function vara(p) { return p === varaLord ? 45 : 0; }
+    function abda(p) { return p === abdaLord ? 15 : 0; }
+    function masa(p) { return p === masaLord ? 30 : 0; }
 
     // хора-правитель
     var horaLord = null;
@@ -146,22 +152,6 @@
       else { var base = ts >= setMs ? setMs : setMs - 86400000; var k2 = Math.floor((ts - base) / ((nextMs - setMs) / 3)); tribhagaLord = ['Mo', 'Ve', 'Ma'][Math.min(2, Math.max(0, k2))]; }
     }
     function tribhaga(p) { if (p === 'Ju') return 60; return (kalaOk && p === tribhagaLord) ? 60 : 0; }
-
-    // маса/абда — правитель дня санкранти (вход Солнца в знак / в Овен)
-    function sunSidLon(t) { return A.sidLonOf('Sun', t, 'geo'); }
-    function ingressWeekdayLord(targetLon, backDays) {
-      // последний переход Солнца через targetLon (° сидер.) до ts
-      var lo = ts - backDays * 86400000, hi = ts;
-      function diff(t) { var d = norm(sunSidLon(t) - targetLon); return d > 180 ? d - 360 : d; } // около 0 у перехода
-      if (diff(lo) > 0) lo = ts - (backDays + 40) * 86400000;         // страховка
-      for (var i = 0; i < 60; i++) { var mid = (lo + hi) / 2; if (diff(mid) <= 0) lo = mid; else hi = mid; }
-      return WEEKDAY_LORD[new Date(lo + tzOff).getUTCDay()];
-    }
-    var masaLord = null, abdaLord = null;
-    try { masaLord = ingressWeekdayLord(sign0(sunL) * 30, 40); } catch (e) {}
-    try { abdaLord = ingressWeekdayLord(0, 380); } catch (e) {}
-    function masa(p) { return p === masaLord ? 30 : 0; }
-    function abda(p) { return p === abdaLord ? 15 : 0; }
 
     // === CHESHTA BALA (приближение — точка калибровки) ===
     function speed(p) { var dt = 0.25 * 86400000; var d = A.sidLonOf(BODY[p], ts + dt, 'geo') - A.sidLonOf(BODY[p], ts - dt, 'geo'); if (d > 180) d -= 360; else if (d < -180) d += 360; return d / 0.5; }
