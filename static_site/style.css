@@ -374,3 +374,15 @@ section { padding: 56px 0; }
 .av-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
 .av-cell { background: #fff; border-radius: 8px; }
 @media (max-width: 620px) { .av-grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* --- Таблицы силы (Вимшопака / САВ) --- */
+.tbl-wrap { overflow-x: auto; }
+.tbl { border-collapse: collapse; font-size: 14px; font-family: var(--sans); }
+.tbl th, .tbl td { border: 1px solid var(--line); padding: 6px 12px; text-align: center; }
+.tbl thead th { background: var(--violet-bg); color: var(--violet-dk); font-weight: 600; }
+.tbl td:first-child, .tbl th:first-child { text-align: left; }
+.tbl .s-hi { color: var(--teal-dk); font-weight: 600; background: var(--teal-bg); }
+.tbl .s-mid { color: var(--text); }
+.tbl .s-lo { color: var(--gold-dk); background: var(--gold-bg); }
+.tbl-sav { width: 100%; font-size: 13px; }
+.tbl-sav td { font-weight: 600; color: var(--violet-dk); }

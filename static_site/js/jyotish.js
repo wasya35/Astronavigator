@@ -251,6 +251,19 @@
     return res;
   }
 
+  // Вимшопака-бала по Шодашаварге
+  function vimsopaka(birth) {
+    if (!window.LunVimsopaka) return { error: 'Модуль вимшопаки не загружен' };
+    var city = window.CITIES.find(birth.place);
+    if (!city) return { error: 'Город не найден: «' + birth.place + '».' };
+    var b = parseBirth(birth);
+    if (!b.y || !b.mo || !b.d) return { error: 'Дата в формате ДД.ММ.ГГГГ' };
+    var utcMs = localToUtc(b.y, b.mo, b.d, b.h, b.mi, city.tz);
+    var lons = {};
+    ['Su', 'Mo', 'Ma', 'Me', 'Ju', 'Ve', 'Sa'].forEach(function (c) { lons[c] = A.sidLonOf(BODY[c], utcMs, 'geo'); });
+    return window.LunVimsopaka.compute(lons);
+  }
+
   // UTC-момент рождения по профилю (для СБЧ-джанмы и пр.), либо null
   function birthUtc(birth) {
     if (!birth || !window.CITIES) return null;
@@ -259,5 +272,5 @@
     return localToUtc(b.y, b.mo, b.d, b.h, b.mi, city.tz);
   }
 
-  window.Jyotish = { sky: sky, natal: natal, periods: periods, SIGNS: SIGNS, NAK: NAK, localToUtc: localToUtc, lagna: lagna, vimshottari: vimshottari, birthUtc: birthUtc, ashtakavarga: ashtakavarga };
+  window.Jyotish = { sky: sky, natal: natal, periods: periods, SIGNS: SIGNS, NAK: NAK, localToUtc: localToUtc, lagna: lagna, vimshottari: vimshottari, birthUtc: birthUtc, ashtakavarga: ashtakavarga, vimsopaka: vimsopaka };
 })();
