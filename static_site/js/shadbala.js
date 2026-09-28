@@ -91,15 +91,15 @@
         return eq.dec;
       } catch (e) { return 0; }
     }
-    function ayana(p) {
-      var d = declination(p);                            // -~24..+24
-      var val;
+    // базовая аяна (0..60, без удвоения Солнца)
+    function ayanaRaw(p) {
+      var d = declination(p), val;
       if (p === 'Mo' || p === 'Sa') val = (24 - d) / 48 * 60;      // южные
       else if (p === 'Me') val = (24 + Math.abs(d)) / 48 * 60;     // всегда
       else val = (24 + d) / 48 * 60;                                // северные (Су,Ма,Юп,Ве)
-      if (p === 'Su') val *= 2;                          // конвенция: Солнце ×2
-      return Math.max(0, Math.min(60, p === 'Su' ? val / 1 : val));
+      return Math.max(0, Math.min(60, val));
     }
+    var moonPakshaBase = fold180(moonL - sunL) / 3;      // пакша Луны без удвоения (для чешты)
 
     // восход/закат текущих суток (для трибхаги, вара, хора)
     var rise = null, set = null, nextRise = null, kalaOk = false;
@@ -121,13 +121,10 @@
     var isDay = kalaOk && ts >= riseMs && ts < setMs;
 
     // вара-правитель (с поправкой на восход)
-    var varaLord = null;
+    var varaLord = null, tzOff = (ctx.tzOffMin || 0) * 60000;
     if (kalaOk) {
-      var dayStartMs = isDay ? riseMs : (ts < riseMs ? riseMs - 86400000 : setMs - 0); // приближённо
-      var wd = new Date(isDay ? riseMs : (ts >= nextMs ? nextMs : (ts >= riseMs ? riseMs : riseMs - 86400000))).getUTCDay();
-      // корректнее: день джйотиша начинается на восходе; берём восход текущих суток
-      wd = new Date(riseMs).getUTCDay();
-      varaLord = WEEKDAY_LORD[wd];
+      // ведический день начинается на восходе; берём ЛОКАЛЬНУЮ дату этого восхода
+      varaLord = WEEKDAY_LORD[new Date(riseMs + tzOff).getUTCDay()];
     }
     function vara(p) { return (kalaOk && p === varaLord) ? 45 : 0; }
 
@@ -158,7 +155,7 @@
       function diff(t) { var d = norm(sunSidLon(t) - targetLon); return d > 180 ? d - 360 : d; } // около 0 у перехода
       if (diff(lo) > 0) lo = ts - (backDays + 40) * 86400000;         // страховка
       for (var i = 0; i < 60; i++) { var mid = (lo + hi) / 2; if (diff(mid) <= 0) lo = mid; else hi = mid; }
-      return WEEKDAY_LORD[new Date(lo).getUTCDay()];
+      return WEEKDAY_LORD[new Date(lo + tzOff).getUTCDay()];
     }
     var masaLord = null, abdaLord = null;
     try { masaLord = ingressWeekdayLord(sign0(sunL) * 30, 40); } catch (e) {}
@@ -210,17 +207,22 @@
     // === сборка ===
     var res = {};
     PL.forEach(function (p) {
-      var st = uchcha(p) + saptavargaja(p) + ojayugma(p) + kendra(p) + drekkana(p);
+      var uc = uchcha(p), sv = saptavargaja(p), oj = ojayugma(p), ke = kendra(p), dk = drekkana(p);
+      var st = uc + sv + oj + ke + dk;
       var dg = dig(p);
-      var ay = ayana(p), pk = paksha(p);
-      var ka = nathonnatha(p) + pk + tribhaga(p) + vara(p) + hora(p) + masa(p) + abda(p) + ay;
-      var ch = cheshta(p, ay, pk);
+      var ayB = ayanaRaw(p);
+      var ay = (p === 'Su') ? ayB * 2 : ayB;             // Солнце: аяна ×2 (в Кала)
+      var pk = paksha(p), nn = nathonnatha(p), tb = tribhaga(p), vr = vara(p), hr = hora(p), ms = masa(p), ab = abda(p);
+      var ka = nn + pk + tb + vr + hr + ms + ab + ay;
+      var ch = cheshta(p, ayB, moonPakshaBase);          // Солнце→база аяны, Луна→база пакши
       var dr = drik(p);
       var na = NAIS[p];
       var total = st + dg + ka + ch + dr + na;
       res[p] = {
         sthana: r2(st), dig: r2(dg), kala: r2(ka), cheshta: r2(ch), drik: r2(dr), naisargika: na,
         total_virupa: r2(total), rupa: r2(total / 60), required: REQ[p], ratio: r2((total / 60) / REQ[p]),
+        parts: { uchcha: r2(uc), saptavargaja: r2(sv), oja: r2(oj), kendra: r2(ke), drekkana: r2(dk),
+          natonnata: r2(nn), paksha: r2(pk), tribhaga: r2(tb), vara: r2(vr), hora: r2(hr), masa: r2(ms), abda: r2(ab), ayana: r2(ay) },
       };
     });
     return { planets: res, order: PL, kalaComplete: kalaOk, lagnaSign: lagnaSign + 1,

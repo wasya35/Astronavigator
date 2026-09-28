@@ -272,7 +272,8 @@
     var b = parseBirth(birth);
     if (!b.y || !b.mo || !b.d) return { error: 'Дата в формате ДД.ММ.ГГГГ' };
     var utcMs = localToUtc(b.y, b.mo, b.d, b.h, b.mi, city.tz);
-    return window.LunShadbala.compute({ utcMs: utcMs, lat: city.lat, lon: city.lon, localHour: b.h + b.mi / 60 });
+    var tzOffMin = tzOffsetMin(new Date(utcMs), city.tz);
+    return window.LunShadbala.compute({ utcMs: utcMs, lat: city.lat, lon: city.lon, localHour: b.h + b.mi / 60, tzOffMin: tzOffMin });
   }
 
   // UTC-момент рождения по профилю (для СБЧ-джанмы и пр.), либо null
