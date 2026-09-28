@@ -69,25 +69,24 @@
     order.forEach(function (p) { drawGridChart(grid.querySelector('[data-k="' + p + '"]'), av.bav[p], { title: AV_RU[p], max: 8 }); });
     drawGridChart(grid.querySelector('[data-k="SAV"]'), av.sav, { title: 'САВ', max: 56, strong: true });
 
-    // Сила планет (Вимшопака; Шадбала — следующим шагом)
+    // Сила планет: Вимшопака · Шадбала (рупы·доля) · САВ(в знаке планеты)
     var st = document.getElementById('strength-table');
-    if (st && J.vimsopaka) {
-      var vm = J.vimsopaka(profile);
-      if (vm.error) { st.innerHTML = '<p class="muted">' + vm.error + '</p>'; }
-      else {
-        var rows = order.map(function (p) {
-          var v = vm.score[p], cls = v > 15 ? 's-hi' : (v > 10 ? 's-mid' : 's-lo');
-          return '<tr><td>' + AV_RU[p] + '</td><td class="' + cls + '">' + v.toFixed(2) + '</td></tr>';
-        }).join('');
-        st.innerHTML = '<table class="tbl"><thead><tr><th>Планета</th><th>Вимшопака (0–20)</th></tr></thead><tbody>' + rows + '</tbody></table>';
-      }
-    }
-    // САВ строкой
-    var svt = document.getElementById('sav-table');
-    if (svt) {
-      var abbr = ['Ов', 'Тл', 'Бл', 'Рк', 'Лв', 'Дв', 'Вс', 'Ск', 'Ст', 'Кз', 'Вд', 'Рб'];
-      svt.innerHTML = '<table class="tbl tbl-sav"><thead><tr>' + abbr.map(function (a) { return '<th>' + a + '</th>'; }).join('') +
-        '</tr></thead><tbody><tr>' + av.sav.map(function (v) { return '<td>' + v + '</td>'; }).join('') + '</tr></tbody></table>';
+    if (st) {
+      var vm = J.vimsopaka ? J.vimsopaka(profile) : { error: 1 };
+      var sb = J.shadbala ? J.shadbala(profile) : { error: 1 };
+      var rows = order.map(function (p) {
+        var vv = (vm && !vm.error) ? vm.score[p] : null;
+        var vcls = vv == null ? '' : (vv > 15 ? 's-hi' : (vv > 10 ? 's-mid' : 's-lo'));
+        var sp = (sb && !sb.error) ? sb.planets[p] : null;
+        var scls = sp == null ? '' : (sp.ratio >= 1 ? 's-hi' : 's-lo');
+        var savv = av.sav[av.signsUsed[p] - 1];
+        var savcls = savv >= 30 ? 's-hi' : (savv >= 25 ? 's-mid' : 's-lo');
+        return '<tr><td>' + AV_RU[p] + '</td>' +
+          '<td class="' + vcls + '">' + (vv == null ? '—' : vv.toFixed(2)) + '</td>' +
+          '<td class="' + scls + '">' + (sp == null ? '—' : sp.rupa.toFixed(2) + ' · ' + sp.ratio.toFixed(2) + '×') + '</td>' +
+          '<td class="' + savcls + '">' + savv + '</td></tr>';
+      }).join('');
+      st.innerHTML = '<table class="tbl"><thead><tr><th>Планета</th><th>Вимшопака</th><th>Шадбала (рупы · доля)</th><th>САВ</th></tr></thead><tbody>' + rows + '</tbody></table>';
     }
   }
 
